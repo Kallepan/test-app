@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 export interface Todo {
@@ -16,7 +17,7 @@ export class TodoService {
   * CRUD API for Todo
   */
   private _api = environment.todo.api;
-
+  
   async addTodo(todo: Todo): Promise<Todo> {
     const response = await fetch(`${this._api}/add`, {
       method: 'POST',

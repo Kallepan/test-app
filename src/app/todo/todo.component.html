@@ -1,1 +1,24 @@
-<p>todo works!</p>
+<main class="container">
+    <header class="header-container">
+        <h1>TODOs List</h1>
+    </header>
+    <section>
+        <form action="submit" (submit)="addTodo($event)">
+            <mat-form-field class="large-form">
+                <input matInput type="text" [(ngModel)]="todo" name="body" placeholder="Add new Todo Item" />
+                <button matSuffix mat-icon-button type="submit"><mat-icon>add</mat-icon></button>
+            </mat-form-field>
+        </form>
+        <mat-progress-bar *ngIf="loading$ | async" mode="indeterminate"></mat-progress-bar>
+        <div *ngIf="todos$ | async as todos">
+            <mat-card *ngFor="let todo of todos" class="card">
+                <mat-card-content class="card-content">
+                    <mat-checkbox [checked]="todo.completed" (change)="updateCompleted($event, todo)"></mat-checkbox>
+                    <mat-card-title>{{todo.todo}}</mat-card-title>
+                    <span class="spacer"></span>
+                    <button mat-mini-fab (click)="deleteTodo(todo.id)"><mat-icon>delete_forever</mat-icon></button>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </section>
+</main>

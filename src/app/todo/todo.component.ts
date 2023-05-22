@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo, TodoService, Todos } from '../services/todo.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, delay, tap } from 'rxjs';
 
 @Component({
   selector: 'app-todo',
@@ -9,11 +9,20 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class TodoComponent implements OnInit {
   private _todos = new BehaviorSubject<Todos>([]);
-  readonly todos$ = this._todos.asObservable();
+  readonly todos$ = this._todos.asObservable().pipe(
+    tap(() => this._loading.next(false))
+  );
+  private _loading = new BehaviorSubject<boolean>(false);
+  readonly loading$ = this._loading.asObservable().pipe(
+    delay(100),
+  );
+
   todo: string = '';
+
   constructor(private _todoService: TodoService) { }
   
   ngOnInit(): void {
+    this._loading.next(true);
     this._todoService.getTodos().then((todos) => {
       this._todos.next(todos);
     });
@@ -35,7 +44,10 @@ export class TodoComponent implements OnInit {
     const todo = {
       todo: this.todo,
       completed: false,
+      userId: 1,
     };
+
+    this._loading.next(true);
     this._todoService.addTodo(todo).then((todo) => {
       this._todos.next([...this._todos.getValue(), todo]);
       this.todo = '';
@@ -46,6 +58,8 @@ export class TodoComponent implements OnInit {
     if (!id) {
       return;
     }
+
+    this._loading.next(true);
     this._todoService.updateTodo(id, {completed}).then((todo) => {
       const todos = this._todos.getValue();
       const index = todos.findIndex((t) => t.id === todo.id);
@@ -54,7 +68,12 @@ export class TodoComponent implements OnInit {
     });
   }
 
-  deleteTodo(id: number) {
+  deleteTodo(id: number|undefined) {
+    if (!id) {
+      return;
+    }
+
+    this._loading.next(true);
     this._todoService.deleteTodo(id).then((todo) => {
       const todos = this._todos.getValue();
       const index = todos.findIndex((t) => t.id === todo.id);
