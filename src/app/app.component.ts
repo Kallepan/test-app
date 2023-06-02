@@ -9,7 +9,7 @@ import { Observable, Subscription, tap } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'test-app';
+  title = 'passkey-test-app';
   user: User = {
     id: '',
     name: '',
