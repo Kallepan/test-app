@@ -1,1 +1,28 @@
+<header class="site-header">
+  <div class="wrapper">
+    <a routerLink="/">
+      <figure class="site-logo">
+        <span>Todo</span>
+      </figure>
+    </a>
+    <nav class="site-nav">
+      <div class="links">
+          <div class="link">
+            <a mat-raised-button color="accent" routerLink="/todo">Todo</a>
+          </div>
+          <div *ngIf="!user.id" class="link">
+            <a mat-raised-button color="accent" routerLink="/register">Register</a>
+          </div>
+          <div *ngIf="!user.id" class="link">
+            <a mat-raised-button color="accent" routerLink="/login">Login</a>
+          </div>
+          <div *ngIf="user.id" class="link">
+            <span>
+              {{ user.name }}
+            </span>
+          </div>
+      </div>
+    </nav>
+  </div>
+</header>
 <router-outlet></router-outlet>
