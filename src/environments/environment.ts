@@ -2,6 +2,6 @@ export const environment = {
     todo: {
         api: 'https://dummyjson.com/todos',
     },
-    api: 'http://localhost:8000',
+    api: 'http://10.0.0.11:8000',
     production: false,
 };

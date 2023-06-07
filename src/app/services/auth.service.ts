@@ -61,11 +61,13 @@ export class AuthService {
     }
   }
   // function to log user out
+  // function to log user out
   logOut() {
     // remove user id from cookie
     document.cookie = 'id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     // reset user data
     this.userData = this._userData;
+    alert("You've been logged out. Please log in again to continue.");
   }
   constructor() { }
 }
